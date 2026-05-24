@@ -32,8 +32,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReportService {
 
     private final ReportRepository reportRepository;
+
     private final UserRepository userRepository;
+
     private final CloudinaryService cloudinaryService;
+
+    private final AiAnalysisService aiAnalysisService;
 
     // ==================== CREATE REPORT ====================
 
@@ -43,15 +47,23 @@ public class ReportService {
             String userEmail
     ) {
 
-        // Validate coordinates
+        // =====================================================
+        // VALIDATE COORDINATES
+        // =====================================================
+
         LocationUtils.validateCoordinatesOrThrow(
                 request.getLatitude(),
                 request.getLongitude()
         );
 
-        // Get authenticated user
+        // =====================================================
+        // GET AUTHENTICATED USER
+        // =====================================================
+
         User user = userRepository.findByEmail(userEmail)
+
                 .orElseThrow(() ->
+
                         new ResourceNotFoundException(
                                 "User",
                                 "email",
@@ -59,17 +71,25 @@ public class ReportService {
                         )
                 );
 
-        // Duplicate detection
+        // =====================================================
+        // DUPLICATE DETECTION
+        // =====================================================
+
         List<PotholeReport> nearbyUnresolved =
+
                 reportRepository.findUnresolvedReportsWithinRadius(
+
                         request.getLatitude(),
+
                         request.getLongitude(),
+
                         AppConstants.DUPLICATE_RADIUS_KM
                 );
 
         if (!nearbyUnresolved.isEmpty()) {
 
-            PotholeReport existing = nearbyUnresolved.get(0);
+            PotholeReport existing =
+                    nearbyUnresolved.get(0);
 
             existing.setDuplicateCount(
                     existing.getDuplicateCount() + 1
@@ -93,11 +113,29 @@ public class ReportService {
             );
         }
 
-        // Upload image
-        String imageUrl =
-                cloudinaryService.uploadImage(request.getImage());
+        // =====================================================
+        // UPLOAD IMAGE
+        // =====================================================
 
-        // Save report
+        String imageUrl =
+                cloudinaryService.uploadImage(
+                        request.getImage()
+                );
+
+        // =====================================================
+        // AI ANALYSIS
+        // =====================================================
+
+        Map<String, Object> aiResult =
+
+                aiAnalysisService.analyzePotholeImage(
+                        imageUrl
+                );
+
+        // =====================================================
+        // SAVE REPORT
+        // =====================================================
+
         PotholeReport report = PotholeReport.builder()
 
                 .user(user)
@@ -122,6 +160,28 @@ public class ReportService {
 
                 .duplicateCount(0)
 
+                // =================================================
+                // AI FIELDS
+                // =================================================
+
+                .aiSeverity(
+                        aiResult.get("severity").toString()
+                )
+
+                .aiConfidence(
+                        Double.valueOf(
+                                aiResult.get("confidence").toString()
+                        )
+                )
+
+                .aiDescription(
+                        aiResult.get("description").toString()
+                )
+
+                .aiRecommendedAction(
+                        aiResult.get("recommendedAction").toString()
+                )
+
                 .build();
 
         PotholeReport saved =
@@ -142,9 +202,11 @@ public class ReportService {
     public ReportResponseDTO getReportById(Long id) {
 
         PotholeReport report =
+
                 reportRepository.findById(id)
 
                         .orElseThrow(() ->
+
                                 new ResourceNotFoundException(
                                         "PotholeReport",
                                         "id",
@@ -165,6 +227,7 @@ public class ReportService {
         User user = userRepository.findByEmail(userEmail)
 
                 .orElseThrow(() ->
+
                         new ResourceNotFoundException(
                                 "User",
                                 "email",
@@ -174,7 +237,9 @@ public class ReportService {
 
         return reportRepository
 
-                .findByUserIdOrderByCreatedAtDesc(user.getId())
+                .findByUserIdOrderByCreatedAtDesc(
+                        user.getId()
+                )
 
                 .stream()
 
@@ -197,6 +262,7 @@ public class ReportService {
         User user = userRepository.findByEmail(userEmail)
 
                 .orElseThrow(() ->
+
                         new ResourceNotFoundException(
                                 "User",
                                 "email",
@@ -290,6 +356,7 @@ public class ReportService {
         LocationUtils.validateCoordinatesOrThrow(lat, lng);
 
         List<PotholeReport> nearby =
+
                 reportRepository.findUnresolvedReportsWithinRadius(
                         lat,
                         lng,

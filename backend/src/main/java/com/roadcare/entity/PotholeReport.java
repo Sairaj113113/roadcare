@@ -72,6 +72,34 @@ public class PotholeReport {
     @Builder.Default
     private Integer duplicateCount = 0;
 
+    // ==================== AI ANALYSIS ====================
+
+    /**
+     * AI predicted severity:
+     * LOW / MEDIUM / HIGH
+     */
+    @Column(name = "ai_severity", length = 20)
+    private String aiSeverity;
+
+    /**
+     * AI confidence score.
+     * Example: 92.5
+     */
+    @Column(name = "ai_confidence")
+    private Double aiConfidence;
+
+    /**
+     * AI generated pothole description.
+     */
+    @Column(name = "ai_description", columnDefinition = "TEXT")
+    private String aiDescription;
+
+    /**
+     * AI suggested repair action.
+     */
+    @Column(name = "ai_recommended_action", columnDefinition = "TEXT")
+    private String aiRecommendedAction;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

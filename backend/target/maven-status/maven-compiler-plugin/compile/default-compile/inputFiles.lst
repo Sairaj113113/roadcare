@@ -8,6 +8,7 @@ C:\Users\aitha\Desktop\RoadCare_Project_Structure\RoadCare\backend\src\main\java
 C:\Users\aitha\Desktop\RoadCare_Project_Structure\RoadCare\backend\src\main\java\com\roadcare\service\ReportService.java
 C:\Users\aitha\Desktop\RoadCare_Project_Structure\RoadCare\backend\src\main\java\com\roadcare\controller\AuthController.java
 C:\Users\aitha\Desktop\RoadCare_Project_Structure\RoadCare\backend\src\main\java\com\roadcare\security\JwtAuthenticationEntryPoint.java
+C:\Users\aitha\Desktop\RoadCare_Project_Structure\RoadCare\backend\src\main\java\com\roadcare\service\AiAnalysisService.java
 C:\Users\aitha\Desktop\RoadCare_Project_Structure\RoadCare\backend\src\main\java\com\roadcare\service\AdminService.java
 C:\Users\aitha\Desktop\RoadCare_Project_Structure\RoadCare\backend\src\main\java\com\roadcare\util\DistanceCalculator.java
 C:\Users\aitha\Desktop\RoadCare_Project_Structure\RoadCare\backend\src\main\java\com\roadcare\dto\auth\LoginRequestDTO.java
@@ -28,6 +29,7 @@ C:\Users\aitha\Desktop\RoadCare_Project_Structure\RoadCare\backend\src\main\java
 C:\Users\aitha\Desktop\RoadCare_Project_Structure\RoadCare\backend\src\main\java\com\roadcare\exception\DuplicateReportException.java
 C:\Users\aitha\Desktop\RoadCare_Project_Structure\RoadCare\backend\src\main\java\com\roadcare\service\NotificationService.java
 C:\Users\aitha\Desktop\RoadCare_Project_Structure\RoadCare\backend\src\main\java\com\roadcare\controller\NotificationController.java
+C:\Users\aitha\Desktop\RoadCare_Project_Structure\RoadCare\backend\src\main\java\com\roadcare\dto\auth\AiAnalysisResponse.java
 C:\Users\aitha\Desktop\RoadCare_Project_Structure\RoadCare\backend\src\main\java\com\roadcare\controller\AdminController.java
 C:\Users\aitha\Desktop\RoadCare_Project_Structure\RoadCare\backend\src\main\java\com\roadcare\dto\auth\VerifyOtpRequestDTO.java
 C:\Users\aitha\Desktop\RoadCare_Project_Structure\RoadCare\backend\src\main\java\com\roadcare\service\CloudinaryService.java

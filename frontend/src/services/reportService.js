@@ -1,26 +1,60 @@
 import api from "./api";
 
+// =========================================================
+// CREATE REPORT
+// =========================================================
+
 const createReport = async (formData) => {
-  const response = await api.post("/reports", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+
+  const response = await api.post(
+
+    "/reports",
+
+    formData,
+
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
 
   return response.data;
 };
+
+// =========================================================
+// MY REPORTS
+// =========================================================
 
 const getMyReports = async () => {
-  const response = await api.get("/reports/my");
+
+  const response =
+    await api.get("/reports/my");
+
   return response.data;
 };
+
+// =========================================================
+// REPORT BY ID
+// =========================================================
 
 const getReportById = async (id) => {
-  const response = await api.get(`/reports/${id}`);
+
+  const response =
+    await api.get(`/reports/${id}`);
+
   return response.data;
 };
 
-const getNearbyReports = async (lat, lng) => {
+// =========================================================
+// NEARBY REPORTS
+// =========================================================
+
+const getNearbyReports = async (
+  lat,
+  lng
+) => {
+
   const response = await api.get(
     `/reports/nearby?lat=${lat}&lng=${lng}`
   );
@@ -28,7 +62,15 @@ const getNearbyReports = async (lat, lng) => {
   return response.data;
 };
 
-const checkDuplicate = async (lat, lng) => {
+// =========================================================
+// DUPLICATE CHECK
+// =========================================================
+
+const checkDuplicate = async (
+  lat,
+  lng
+) => {
+
   const response = await api.post(
     `/reports/check-duplicate?lat=${lat}&lng=${lng}`
   );
@@ -36,20 +78,34 @@ const checkDuplicate = async (lat, lng) => {
   return response.data;
 };
 
-/**
- * Homepage statistics
- */
+// =========================================================
+// HOMEPAGE STATS
+// =========================================================
+
 const getHomepageStats = async () => {
-  const response = await api.get("/reports/stats");
+
+  const response =
+    await api.get("/reports/stats");
+
   return response.data;
 };
 
+// =========================================================
+// EXPORTS
+// =========================================================
+
 const reportService = {
+
   createReport,
+
   getMyReports,
+
   getReportById,
+
   getNearbyReports,
+
   checkDuplicate,
+
   getHomepageStats,
 };
 

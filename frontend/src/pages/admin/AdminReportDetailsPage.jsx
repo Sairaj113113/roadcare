@@ -29,7 +29,9 @@ const AdminReportDetailsPage = () => {
 
   const [successMsg, setSuccessMsg] = useState('');
 
-  // ================= FETCH REPORT =================
+  // =========================================================
+  // FETCH REPORT
+  // =========================================================
 
   const fetchReport = useCallback(async () => {
 
@@ -37,7 +39,8 @@ const AdminReportDetailsPage = () => {
 
     try {
 
-      const data = await adminService.getReportById(id);
+      const data =
+        await adminService.getReportById(id);
 
       setReport(data);
 
@@ -62,9 +65,14 @@ const AdminReportDetailsPage = () => {
 
   }, [fetchReport]);
 
-  // ================= UPDATE STATUS =================
+  // =========================================================
+  // UPDATE STATUS
+  // =========================================================
 
-  const handleStatusUpdate = async ({ status, remarks }) => {
+  const handleStatusUpdate = async ({
+    status,
+    remarks
+  }) => {
 
     setUpdateLoading(true);
 
@@ -72,10 +80,14 @@ const AdminReportDetailsPage = () => {
 
     try {
 
-      const updated = await adminService.updateReportStatus(id, {
-        status,
-        remarks,
-      });
+      const updated =
+        await adminService.updateReportStatus(
+          id,
+          {
+            status,
+            remarks,
+          }
+        );
 
       setReport(updated);
 
@@ -94,8 +106,8 @@ const AdminReportDetailsPage = () => {
     } catch (err) {
 
       setUpdateError(
-        err.response?.data?.message ||
-        'Failed to update status.'
+        err.response?.data?.message
+        || 'Failed to update status.'
       );
 
     } finally {
@@ -104,7 +116,9 @@ const AdminReportDetailsPage = () => {
     }
   };
 
-  // ================= LOADING =================
+  // =========================================================
+  // LOADING
+  // =========================================================
 
   if (loading) {
 
@@ -113,7 +127,9 @@ const AdminReportDetailsPage = () => {
     );
   }
 
-  // ================= ERROR =================
+  // =========================================================
+  // ERROR
+  // =========================================================
 
   if (error) {
 
@@ -131,10 +147,12 @@ const AdminReportDetailsPage = () => {
 
         <button
           onClick={() => navigate('/admin/reports')}
-          className="px-5 py-3 rounded-xl
-                     bg-primary-600 text-white
-                     hover:bg-primary-700
-                     transition-colors"
+          className="
+            px-5 py-3 rounded-xl
+            bg-primary-600 text-white
+            hover:bg-primary-700
+            transition-colors
+          "
         >
           ← Back to Reports
         </button>
@@ -143,30 +161,68 @@ const AdminReportDetailsPage = () => {
     );
   }
 
-  // ================= DATA =================
+  // =========================================================
+  // REPORT DATA
+  // =========================================================
 
   const {
+
     imageUrl,
     description,
+
     address,
     city,
+
     latitude,
     longitude,
+
     status,
     duplicateCount,
+
     reporterName,
     reporterEmail,
+
     createdAt,
     updatedAt,
+
+    // =====================================================
+    // AI FIELDS
+    // =====================================================
+
+    aiSeverity,
+    aiConfidence,
+    aiDescription,
+    aiRecommendedAction,
+
   } = report;
 
-  // ================= UI =================
+  // =========================================================
+  // AI STYLES
+  // =========================================================
+
+  const severityStyles = {
+
+    HIGH:
+      'bg-red-100 text-red-700 border border-red-200',
+
+    MEDIUM:
+      'bg-yellow-100 text-yellow-700 border border-yellow-200',
+
+    LOW:
+      'bg-green-100 text-green-700 border border-green-200',
+  };
+
+  // =========================================================
+  // UI
+  // =========================================================
 
   return (
 
     <div className="max-w-7xl mx-auto space-y-6">
 
-      {/* ================= MODAL ================= */}
+      {/* =====================================================
+          MODAL
+      ====================================================== */}
 
       {showModal && (
 
@@ -185,27 +241,45 @@ const AdminReportDetailsPage = () => {
         />
       )}
 
-      {/* ================= TOP BAR ================= */}
+      {/* =====================================================
+          TOP BAR
+      ====================================================== */}
 
       <div
-        className="flex items-start justify-between
-                   gap-4 flex-wrap"
+        className="
+          flex items-start justify-between
+          gap-4 flex-wrap
+        "
       >
 
         <div>
 
           <button
-            onClick={() => navigate('/admin/reports')}
-            className="text-sm text-gray-500
-                       hover:text-primary-600
-                       transition-colors"
+            onClick={() =>
+              navigate('/admin/reports')
+            }
+            className="
+              text-sm text-gray-500
+              hover:text-primary-600
+              transition-colors
+            "
           >
             ← Back to Reports
           </button>
 
-          <div className="flex items-center gap-3 mt-2 flex-wrap">
+          <div
+            className="
+              flex items-center gap-3
+              mt-2 flex-wrap
+            "
+          >
 
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1
+              className="
+                text-3xl font-bold
+                text-gray-900
+              "
+            >
               Report #{id}
             </h1>
 
@@ -214,52 +288,64 @@ const AdminReportDetailsPage = () => {
           </div>
 
           <p className="text-gray-500 mt-2">
+
             📍 {[address, city]
               .filter(Boolean)
               .join(', ')}
+
           </p>
 
         </div>
 
         <button
           onClick={() => setShowModal(true)}
-          className="px-5 py-3 rounded-2xl
-                     bg-primary-600 text-white
-                     hover:bg-primary-700
-                     font-medium text-sm
-                     shadow-sm transition-all"
+          className="
+            px-5 py-3 rounded-2xl
+            bg-primary-600 text-white
+            hover:bg-primary-700
+            font-medium text-sm
+            shadow-sm transition-all
+          "
         >
           ✏️ Update Status
         </button>
 
       </div>
 
-      {/* ================= SUCCESS ================= */}
+      {/* =====================================================
+          SUCCESS MESSAGE
+      ====================================================== */}
 
       {successMsg && (
 
         <div
-          className="bg-emerald-50 border
-                     border-emerald-200
-                     text-emerald-700
-                     px-4 py-3 rounded-2xl
-                     text-sm"
+          className="
+            bg-emerald-50 border
+            border-emerald-200
+            text-emerald-700
+            px-4 py-3 rounded-2xl
+            text-sm
+          "
         >
           ✅ {successMsg}
         </div>
       )}
 
-      {/* ================= MAIN GRID ================= */}
+      {/* =====================================================
+          MAIN GRID
+      ====================================================== */}
 
       <div
-        className="grid grid-cols-1
-                   xl:grid-cols-3
-                   gap-6"
+        className="
+          grid grid-cols-1
+          xl:grid-cols-3
+          gap-6
+        "
       >
 
-        {/* ===================================================== */}
-        {/* LEFT SIDE */}
-        {/* ===================================================== */}
+        {/* ===================================================
+            LEFT SIDE
+        ==================================================== */}
 
         <div className="xl:col-span-2 space-y-6">
 
@@ -268,17 +354,21 @@ const AdminReportDetailsPage = () => {
           {imageUrl && (
 
             <div
-              className="bg-white rounded-3xl
-                         overflow-hidden
-                         shadow-sm border
-                         border-gray-100"
+              className="
+                bg-white rounded-3xl
+                overflow-hidden
+                shadow-sm border
+                border-gray-100
+              "
             >
 
               <img
                 src={imageUrl}
                 alt={`Report ${id}`}
-                className="w-full h-[420px]
-                           object-cover"
+                className="
+                  w-full h-[420px]
+                  object-cover
+                "
               />
 
             </div>
@@ -289,21 +379,27 @@ const AdminReportDetailsPage = () => {
           {description && (
 
             <div
-              className="bg-white rounded-3xl
-                         shadow-sm border
-                         border-gray-100 p-6"
+              className="
+                bg-white rounded-3xl
+                shadow-sm border
+                border-gray-100 p-6
+              "
             >
 
               <h2
-                className="text-lg font-semibold
-                           text-gray-900 mb-4"
+                className="
+                  text-lg font-semibold
+                  text-gray-900 mb-4
+                "
               >
-                Description
+                Citizen Description
               </h2>
 
               <p
-                className="text-gray-700
-                           leading-relaxed"
+                className="
+                  text-gray-700
+                  leading-relaxed
+                "
               >
                 {description}
               </p>
@@ -314,21 +410,27 @@ const AdminReportDetailsPage = () => {
           {/* LOCATION */}
 
           <div
-            className="bg-white rounded-3xl
-                       shadow-sm border
-                       border-gray-100 p-6"
+            className="
+              bg-white rounded-3xl
+              shadow-sm border
+              border-gray-100 p-6
+            "
           >
 
             <h2
-              className="text-lg font-semibold
-                         text-gray-900 mb-4"
+              className="
+                text-lg font-semibold
+                text-gray-900 mb-4
+              "
             >
               Location
             </h2>
 
             <p
-              className="text-gray-800
-                         font-medium"
+              className="
+                text-gray-800
+                font-medium
+              "
             >
               📍 {[address, city]
                 .filter(Boolean)
@@ -338,8 +440,10 @@ const AdminReportDetailsPage = () => {
             {latitude && longitude && (
 
               <p
-                className="text-sm text-gray-500
-                           mt-2 font-mono"
+                className="
+                  text-sm text-gray-500
+                  mt-2 font-mono
+                "
               >
                 {Number(latitude).toFixed(6)},
                 {' '}
@@ -353,13 +457,15 @@ const AdminReportDetailsPage = () => {
                 href={`https://maps.google.com/?q=${latitude},${longitude}`}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center
-                           gap-2 mt-5
-                           px-5 py-3 rounded-2xl
-                           bg-primary-600 text-white
-                           hover:bg-primary-700
-                           text-sm font-medium
-                           transition-colors"
+                className="
+                  inline-flex items-center
+                  gap-2 mt-5
+                  px-5 py-3 rounded-2xl
+                  bg-primary-600 text-white
+                  hover:bg-primary-700
+                  text-sm font-medium
+                  transition-colors
+                "
               >
                 🗺 Open in Google Maps
               </a>
@@ -369,23 +475,185 @@ const AdminReportDetailsPage = () => {
 
         </div>
 
-        {/* ===================================================== */}
-        {/* RIGHT SIDE */}
-        {/* ===================================================== */}
+        {/* ===================================================
+            RIGHT SIDE
+        ==================================================== */}
 
         <div className="space-y-5">
 
-          {/* REPORTER */}
+          {/* =================================================
+              AI ANALYSIS
+          ================================================== */}
 
           <div
-            className="bg-white rounded-3xl
-                       shadow-sm border
-                       border-gray-100 p-6"
+            className="
+              bg-white rounded-3xl
+              shadow-sm border
+              border-gray-100 p-6
+            "
+          >
+
+            <div
+              className="
+                flex items-center gap-2
+                mb-5
+              "
+            >
+
+              <span className="text-xl">
+                🤖
+              </span>
+
+              <h2
+                className="
+                  text-lg font-semibold
+                  text-gray-900
+                "
+              >
+                AI Analysis
+              </h2>
+
+            </div>
+
+            {/* SEVERITY */}
+
+            {aiSeverity && (
+
+              <div className="mb-5">
+
+                <p
+                  className="
+                    text-xs uppercase
+                    tracking-wide
+                    text-gray-400 mb-2
+                  "
+                >
+                  Severity
+                </p>
+
+                <span
+                  className={`
+                    inline-flex items-center
+                    gap-2 px-3 py-2
+                    rounded-full
+                    text-sm font-semibold
+                    ${severityStyles[aiSeverity] || ''}
+                  `}
+                >
+
+                  {aiSeverity === 'HIGH' && '🔴'}
+                  {aiSeverity === 'MEDIUM' && '🟡'}
+                  {aiSeverity === 'LOW' && '🟢'}
+
+                  {aiSeverity} RISK
+
+                </span>
+
+              </div>
+            )}
+
+            {/* CONFIDENCE */}
+
+            {aiConfidence && (
+
+              <div className="mb-5">
+
+                <p
+                  className="
+                    text-xs uppercase
+                    tracking-wide
+                    text-gray-400 mb-2
+                  "
+                >
+                  Confidence
+                </p>
+
+                <p
+                  className="
+                    text-gray-800 font-medium
+                  "
+                >
+                  {Math.round(aiConfidence)}%
+                </p>
+
+              </div>
+            )}
+
+            {/* AI DESCRIPTION */}
+
+            {aiDescription && (
+
+              <div className="mb-5">
+
+                <p
+                  className="
+                    text-xs uppercase
+                    tracking-wide
+                    text-gray-400 mb-2
+                  "
+                >
+                  AI Description
+                </p>
+
+                <p
+                  className="
+                    text-sm text-gray-700
+                    leading-relaxed
+                  "
+                >
+                  {aiDescription}
+                </p>
+
+              </div>
+            )}
+
+            {/* RECOMMENDED ACTION */}
+
+            {aiRecommendedAction && (
+
+              <div>
+
+                <p
+                  className="
+                    text-xs uppercase
+                    tracking-wide
+                    text-gray-400 mb-2
+                  "
+                >
+                  Recommended Action
+                </p>
+
+                <p
+                  className="
+                    text-sm text-blue-700
+                    font-medium leading-relaxed
+                  "
+                >
+                  {aiRecommendedAction}
+                </p>
+
+              </div>
+            )}
+
+          </div>
+
+          {/* =================================================
+              REPORTER
+          ================================================== */}
+
+          <div
+            className="
+              bg-white rounded-3xl
+              shadow-sm border
+              border-gray-100 p-6
+            "
           >
 
             <h2
-              className="text-lg font-semibold
-                         text-gray-900 mb-4"
+              className="
+                text-lg font-semibold
+                text-gray-900 mb-4
+              "
             >
               Reporter
             </h2>
@@ -393,12 +661,14 @@ const AdminReportDetailsPage = () => {
             <div className="flex items-center gap-4">
 
               <div
-                className="w-14 h-14 rounded-full
-                           bg-primary-100
-                           flex items-center
-                           justify-center
-                           text-primary-700
-                           font-bold text-xl"
+                className="
+                  w-14 h-14 rounded-full
+                  bg-primary-100
+                  flex items-center
+                  justify-center
+                  text-primary-700
+                  font-bold text-xl
+                "
               >
                 {reporterName?.charAt(0)?.toUpperCase()}
               </div>
@@ -406,15 +676,17 @@ const AdminReportDetailsPage = () => {
               <div>
 
                 <p
-                  className="font-semibold
-                             text-gray-900"
+                  className="
+                    font-semibold text-gray-900
+                  "
                 >
                   {reporterName}
                 </p>
 
                 <p
-                  className="text-sm
-                             text-gray-500"
+                  className="
+                    text-sm text-gray-500
+                  "
                 >
                   {reporterEmail}
                 </p>
@@ -428,14 +700,18 @@ const AdminReportDetailsPage = () => {
           {/* STATUS */}
 
           <div
-            className="bg-white rounded-3xl
-                       shadow-sm border
-                       border-gray-100 p-6"
+            className="
+              bg-white rounded-3xl
+              shadow-sm border
+              border-gray-100 p-6
+            "
           >
 
             <h2
-              className="text-lg font-semibold
-                         text-gray-900 mb-4"
+              className="
+                text-lg font-semibold
+                text-gray-900 mb-4
+              "
             >
               Current Status
             </h2>
@@ -450,18 +726,21 @@ const AdminReportDetailsPage = () => {
           {/* TIMELINE */}
 
           <div
-            className="bg-white rounded-3xl
-                       shadow-sm border
-                       border-gray-100 p-6 space-y-5"
+            className="
+              bg-white rounded-3xl
+              shadow-sm border
+              border-gray-100 p-6 space-y-5
+            "
           >
 
             <div>
 
               <p
-                className="text-xs uppercase
-                           tracking-wide
-                           text-gray-400
-                           mb-1"
+                className="
+                  text-xs uppercase
+                  tracking-wide
+                  text-gray-400 mb-1
+                "
               >
                 Submitted
               </p>
@@ -475,10 +754,11 @@ const AdminReportDetailsPage = () => {
             <div>
 
               <p
-                className="text-xs uppercase
-                           tracking-wide
-                           text-gray-400
-                           mb-1"
+                className="
+                  text-xs uppercase
+                  tracking-wide
+                  text-gray-400 mb-1
+                "
               >
                 Last Updated
               </p>
@@ -496,21 +776,27 @@ const AdminReportDetailsPage = () => {
           {duplicateCount > 0 && (
 
             <div
-              className="bg-amber-50 rounded-3xl
-                         border border-amber-200
-                         p-6"
+              className="
+                bg-amber-50 rounded-3xl
+                border border-amber-200
+                p-6
+              "
             >
 
               <h2
-                className="text-lg font-semibold
-                           text-amber-800 mb-2"
+                className="
+                  text-lg font-semibold
+                  text-amber-800 mb-2
+                "
               >
                 Duplicate Reports
               </h2>
 
               <p
-                className="text-3xl font-bold
-                           text-amber-700"
+                className="
+                  text-3xl font-bold
+                  text-amber-700
+                "
               >
                 {duplicateCount}
               </p>
