@@ -1,0 +1,27 @@
+# Maven
+target/
+**/target/
+
+# Jar files
+*.jar
+*.war
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env
+
+# Build
+build/
+
+# Maven wrapper logs
+.mvn/
