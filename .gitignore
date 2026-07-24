@@ -25,3 +25,11 @@ build/
 
 # Maven wrapper logs
 .mvn/
+
+# Frontend / Node
+node_modules/
+**/node_modules/
+
+# Vite build
+dist/
+**/dist/
