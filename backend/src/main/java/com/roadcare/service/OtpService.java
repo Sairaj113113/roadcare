@@ -302,10 +302,7 @@ public class OtpService {
 
         } catch (Exception ex) {
 
-            log.error(
-                    "Failed to send OTP email: {}",
-                    ex.getMessage()
-            );
+            log.error("Failed to send OTP email", ex);
 
             throw new RuntimeException(
                     "Failed to send OTP email"
